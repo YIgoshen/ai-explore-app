@@ -2,28 +2,171 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   overflow: hidden;
 }
 
-.vega-chart h3 {
-  padding: 12px 16px;
-  border-bottom: 1px solid #e0e0e0;
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #e5e5e5;
+  gap: 12px;
+}
+
+.chart-header h3 {
   margin: 0;
   font-size: 16px;
-  color: #333;
+  color: #1a1a1a;
+  flex: 1;
+  font-weight: 600;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.chart-type-selector {
+  display: flex;
+  gap: 4px;
+  background-color: #f5f5f5;
+  padding: 4px;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+}
+
+.chart-type-btn {
+  padding: 6px 10px;
+  background-color: transparent;
+  color: #666;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.chart-type-btn:hover {
+  background-color: #e5e5e5;
+  color: #1a1a1a;
+}
+
+.chart-type-btn.active {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.copy-btn {
+  padding: 8px 12px;
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background-color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.copy-btn:active {
+  background-color: #0a0a0a;
+}
+
+.save-dropdown {
+  position: relative;
+}
+
+.save-btn {
+  padding: 8px 12px;
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.save-btn:hover {
+  background-color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.save-btn:active {
+  background-color: #0a0a0a;
+}
+
+.save-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 150px;
+  overflow: hidden;
+}
+
+.save-option {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  background-color: transparent;
+  color: #1a1a1a;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.save-option:hover {
+  background-color: #f5f5f5;
+}
+
+.save-option:active {
+  background-color: #e5e5e5;
+}
+
+.save-option:not(:last-child) {
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .chart-container {
   flex: 1;
   overflow: auto;
   padding: 16px;
-  background-color: #fafafa;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .chart-container .placeholder {
@@ -39,13 +182,19 @@
   margin: 0;
 }
 
-/* Vega-Embed styles */
+/* Vega-Embed styles - make chart wider */
 .vega-chart canvas {
   max-width: 100%;
+  /* width: 20%; */
   height: auto;
 }
 
 .vega-chart svg {
   max-width: 100%;
+  /* width: 100%; */
   height: auto;
+}
+
+.vega-chart summary {
+  display: none;
 }

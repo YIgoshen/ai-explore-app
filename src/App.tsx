@@ -4,6 +4,7 @@ import { PlaybackControls } from './components/PlaybackControls';
 import { StatusIndicator } from './components/StatusIndicator';
 import { StreamingOutput } from './components/StreamingOutput';
 import { VegaChart } from './components/VegaChart';
+import { Logo } from './components/Logo';
 import { useStreamPlayer } from './hooks/useStreamPlayer';
 import { useVegaExtractor } from './hooks/useVegaExtractor';
 import { parseStreamEvents } from './utils/eventParser';
@@ -76,7 +77,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🚀 AI Explore</h1>
+        <Logo />
         <p>Stream and visualize AI-generated content with Vega charts</p>
       </header>
 
