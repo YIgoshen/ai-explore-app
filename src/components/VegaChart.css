@@ -81,6 +81,8 @@
   font-weight: 500;
   transition: all 0.2s ease;
   white-space: nowrap;
+  width: 108px;
+  height: 37px;
 }
 
 .copy-btn:hover {

@@ -178,7 +178,7 @@ export function VegaChart({ spec }: VegaChartProps) {
                 className="copy-btn"
                 title="Copy Vega spec to clipboard"
               >
-                {showCopyFeedback ? '✓ Copied!' : '📋 Copy Spec'}
+                {showCopyFeedback ? '✓ Copied!   ' : '📋 Copy Spec'}
               </button>
               <div className="save-dropdown">
                 <button
