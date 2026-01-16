@@ -1,0 +1,53 @@
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.status-idle {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.status-streaming {
+  background-color: #fff3cd;
+  color: #856404;
+  animation: pulse 1.5s infinite;
+}
+
+.status-done {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-icon {
+  font-size: 16px;
+}
+
+.status-label {
+  font-weight: 600;
+}
+
+.error-message {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
