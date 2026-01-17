@@ -2,6 +2,14 @@
 
 A modern React + TypeScript application for streaming AI-generated content with real-time Vega-Lite chart visualization and automatic data extraction.
 
+
+
+## Video:
+
+https://www.loom.com/share/4cd841c358be487bbe4b9e8b92a9ac04
+
+
+
 ## 🚀 Features
 
 - **File Upload**: Load `.jsonl` files containing streaming events
@@ -56,104 +64,59 @@ npm run preview
 5. **Switch Chart Types**: Toggle between Bar (📊), Line (📈), and Scatter (⚫) visualizations
 6. **Export**: Copy Vega specs or save charts as images
 
-## 📥 Example Files
+## 🔄 How Stream and Vega Spec are Processed
 
-The project includes example JSONL files you can use to test the application:
-
-### example_stream.jsonl
-A complete example with:
-- Text description
-- Data array (6 regions with revenue)
-- Vega-Lite bar chart specification
-
-**How to use:**
-1. Run `npm run dev`
-2. Click "📁 Load .jsonl File"
-3. Select `example_stream.jsonl` from the project root
-4. Click "▶ Play"
-5. Watch the chart render with real data
-
-### llm_stream_dump.jsonl
-Another example with:
-- Russian text description
-- Data array (6 regions with revenue)
-- Vega-Lite bar chart specification
-
-**Both files demonstrate:**
-- How to structure streaming events
-- How to include data arrays in JSON code blocks
-- How to include Vega-Lite specifications
-- How the app extracts and visualizes data automatically
-
-## 📁 Project Structure
+### Stream Processing Flow
 
 ```
-src/
-├── components/          # React components
-│   ├── FileUploader.tsx    # File upload functionality
-│   ├── PlaybackControls.tsx # Stream playback controls
-│   ├── StatusIndicator.tsx  # Status display
-│   ├── StreamingOutput.tsx  # Text output with JSON highlighting
-│   ├── VegaChart.tsx       # Chart visualization with real data
-│   └── Logo.tsx           # App logo component
-├── hooks/              # Custom React hooks
-│   ├── useStreamPlayer.ts  # Stream playback logic
-│   └── useVegaExtractor.ts # Vega spec extraction
-├── utils/              # Utility functions
-│   ├── eventParser.ts     # JSONL event parsing
-│   ├── vegaExtractor.ts   # Vega spec extraction logic
-│   ├── dataExtractor.ts   # Data array extraction from stream
-│   └── jsonHighlighter.ts # JSON syntax highlighting
-├── types/              # TypeScript type definitions
-└── App.tsx            # Main application component
+1. Load JSONL File
+   ↓
+2. Parse Events (parseStreamEvents)
+   - Split by lines
+   - Parse each line as JSON
+   - Validate event structure
+   ↓
+3. Playback (useStreamPlayer)
+   - Process events one by one
+   - Add random delays (50-150ms)
+   - Accumulate text tokens
+   ↓
+4. Parallel Extraction (in App.tsx)
+   ├→ Extract Vega Spec (extractVegaSpec)
+   │  - Search in code blocks: ```json {...}```
+   │  - Search in plain text
+   │  - Validate: must have "mark" and "encoding"
+   │  - Select largest valid spec
+   │
+   └→ Extract Data (extractDataFromText)
+      - Search in code blocks: ```json [...]```
+      - Search in plain text
+      - Validate: must be array of objects
+      - Select largest valid array
+   ↓
+5. Chart Rendering (VegaChart)
+   - Combine spec + data
+   - Apply selected chart type
+   - Render with vegaEmbed
 ```
 
-## 📊 Data Format
-
-The application expects `.jsonl` files with streaming events:
-
+**Example:**
 ```json
-{"event": "token", "data": {"delta": "Some text "}}
-{"event": "token", "data": {"delta": "more text"}}
-{"event": "done", "data": {}}
+{
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "region", "type": "nominal"},
+    "y": {"field": "revenue", "type": "quantitative"}
+  }
+}
 ```
 
-Supported event types:
-- `token` - Text content with `delta` field
-- `done` - Stream completion
-- `error` - Error with `message` field
-
-## 🎨 Chart Types and Data
-
-The application automatically detects and extracts:
-
-1. **Data Arrays** - JSON arrays with objects containing key-value pairs
-   ```json
-   [
-     {"region": "Almaty", "revenue": 150},
-     {"region": "Astana", "revenue": 120}
-   ]
-   ```
-
-2. **Vega-Lite Specifications** - JSON objects with `mark` and `encoding` properties
-   ```json
-   {
-     "mark": "bar",
-     "encoding": {
-       "x": {"field": "region", "type": "nominal"},
-       "y": {"field": "revenue", "type": "quantitative"}
-     }
-   }
-   ```
-
-The application supports:
-- **Bar Charts** (📊) - Default visualization
-- **Line Charts** (📈) - Time series and continuous data
-- **Scatter Plots** (⚫) - Point-based visualizations
+## Charts
 
 Charts are rendered with **real data extracted from the stream**, not hardcoded sample data.
 
 
+## jsonl data
 This .jsonl should be downloaded to use it in the app. Also the file is in the root of the project (llm_stream_dump.jsonl):
 
 ```jsonl
@@ -202,15 +165,3 @@ This .jsonl should be downloaded to use it in the app. Also the file is in the r
 
 {"event":"done","data":{"usage":{"input_tokens":142,"output_tokens":389}}}
 ```
-
-**Key points:**
-- Each line is a separate JSON object (JSONL format)
-- Data arrays must be wrapped in ` ```json ... ``` ` code blocks
-- Vega specs must be wrapped in ` ```json ... ``` ` code blocks
-- The app extracts both automatically and renders the chart with real data
-
-### Code Quality
-- TypeScript strict mode enabled
-- Comprehensive error handling
-- Performance optimizations with React hooks
-- Responsive design for all devices
