@@ -1,15 +1,17 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import vegaEmbed, { VisualizationSpec } from 'vega-embed';
 import { VegaSpec } from '../types';
+import { DataPoint } from '../utils/dataExtractor';
 import './VegaChart.css';
 
 interface VegaChartProps {
   spec: VegaSpec | null;
+  extractedData?: DataPoint[] | null;
 }
 
 type ChartType = 'bar' | 'line' | 'scatter';
 
-// Sample data for the chart
+// Sample data for the chart (fallback)
 const SAMPLE_DATA = [
   { region: 'Almaty', revenue: 120 },
   { region: 'Astana', revenue: 90 },
@@ -25,10 +27,10 @@ const SAMPLE_DATA = [
 
 /**
  * Component to render Vega-Lite charts
- * Uses vega-embed to render specs with sample data
+ * Uses vega-embed to render specs with extracted or sample data
  * Allows switching between different chart types
  */
-export function VegaChart({ spec }: VegaChartProps) {
+export function VegaChart({ spec, extractedData }: VegaChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showCopyFeedback, setShowCopyFeedback] = useState(false);
   const [chartType, setChartType] = useState<ChartType>('bar');
@@ -94,9 +96,12 @@ export function VegaChart({ spec }: VegaChartProps) {
   const getTransformedSpec = useCallback((): VisualizationSpec | null => {
     if (!spec) return null;
 
+    // Use extracted data if available, otherwise use sample data
+    const dataToUse = extractedData && extractedData.length > 0 ? extractedData : SAMPLE_DATA;
+
     const baseSpec = {
       ...spec,
-      data: spec.data || { values: SAMPLE_DATA },
+      data: spec.data || { values: dataToUse },
     };
 
     // Override mark type based on selection
@@ -115,7 +120,7 @@ export function VegaChart({ spec }: VegaChartProps) {
       ...baseSpec,
       mark,
     };
-  }, [spec, chartType]);
+  }, [spec, chartType, extractedData]);
 
   useEffect(() => {
     if (!spec || !containerRef.current) {

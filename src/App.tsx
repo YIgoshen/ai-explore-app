@@ -8,12 +8,9 @@ import { Logo } from './components/Logo';
 import { useStreamPlayer } from './hooks/useStreamPlayer';
 import { useVegaExtractor } from './hooks/useVegaExtractor';
 import { parseStreamEvents } from './utils/eventParser';
+import { extractDataFromText } from './utils/dataExtractor';
 import './App.css';
 
-/**
- * Main App component - AI Explore
- * Manages file loading, streaming playback, and Vega chart extraction
- */
 function App() {
   const [streamText, setStreamText] = useState('');
   const [events, setEvents] = useState<any[]>([]);
@@ -21,6 +18,9 @@ function App() {
   const [fileLoaded, setFileLoaded] = useState(false);
 
   const { spec, updateFromText, reset: resetVegaExtractor } = useVegaExtractor();
+  
+  // Extract data from streaming text
+  const extractedData = extractDataFromText(streamText);
 
   const {
     status,
@@ -105,7 +105,7 @@ function App() {
         {fileLoaded && (
           <div className="content-grid">
             <StreamingOutput text={streamText} />
-            <VegaChart spec={spec} />
+            <VegaChart spec={spec} extractedData={extractedData} />
           </div>
         )}
 

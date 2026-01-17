@@ -21,8 +21,10 @@ export function extractVegaSpec(text: string): VegaSpec | null {
       }
     } catch {
       // Ignore parse errors
+      console.error("Parsing error")
     }
   }
+
 
   // If found in code blocks, return it
   if (largestSpec) {

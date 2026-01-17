@@ -1,8 +1,5 @@
 import './Logo.css';
 
-/**
- * Logo component for the app header
- */
 export function Logo() {
   return (
     <div className="logo">
